@@ -3,10 +3,8 @@
 class ProductManager {
 	
 	#id = 0;
-	
 	constructor(){
 		this.products = []
-
 	}
 
 	addProduct(title,description,price,thumbanil,code,stock) {
@@ -15,8 +13,7 @@ class ProductManager {
 			
 			if(!this.products.some(product => product.code == code)) {
 
-				const id = this.#id;
-				this.products.push({title,description,price,thumbanil,code,stock,id});
+				this.products.push({title,description,price,thumbanil,code,stock,id:this.#id});
 				this.#id++;
 
 			}
