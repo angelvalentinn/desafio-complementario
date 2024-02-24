@@ -24,7 +24,7 @@ class ProductManager {
 
 			}
 
-		} else return console.log('error, todos los campos son obligatorios');
+		} else return console.error('error, todos los campos son obligatorios');
 
 	}
 
@@ -62,7 +62,6 @@ class ProductManager {
 
 	deleteProduct(id) {
 		const products = this.getProducts().filter(prod => prod.id !== id);
-		console.log(products);
 		FS.writeFileSync(this.path, JSON.stringify(products));
 	}
 
