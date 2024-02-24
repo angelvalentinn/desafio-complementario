@@ -1,4 +1,4 @@
-// Pre entrega 1 backend - Ángel Valentín Altieri :)
+// Pre entrega 2 backend - Ángel Valentín Altieri :)
 const FS = require('fs');
 
 class ProductManager {
