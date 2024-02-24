@@ -1,4 +1,4 @@
-# Pre entrega 1 - Curso de Backend Coderhouse
+# Pre entrega 2 - Curso de Backend Coderhouse
 ### Ángel Valentín Altieri
 ---
 *Realizar una clase “ProductManager” que gestione un conjunto de productos.*
