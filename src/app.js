@@ -15,11 +15,11 @@ app.use(express.urlencoded({extended:true}))
     cual recibirá un límite de resultados. 
 */
 
-app.get("/products", (req, res) => {
+app.get("/products", async (req, res) => {
 
     const limit = req.query.limit;
 
-    const users = productos.getProducts();
+    const users = await productos.getProducts();
 
     if(!limit) return res.send({users})
 
@@ -33,11 +33,11 @@ app.get("/products", (req, res) => {
     sólo el producto solicitado, en lugar de todos los productos.  
 */
 
-app.get("/products/:pid", (req, res) => {
+app.get("/products/:pid", async (req, res) => {
 
     const id = req.params.pid;
 
-    const users = productos.getProducts();
+    const users = await productos.getProducts();
 
     if(isNaN(id)) return res.send({error: 'Solo ids numericos'});
 
