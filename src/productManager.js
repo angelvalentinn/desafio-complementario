@@ -1,7 +1,7 @@
-// Pre entrega 2 backend - Ángel Valentín Altieri :)
-const FS = require('fs');
+// Pre entrega 3 backend - Ángel Valentín Altieri :)
+import {writeFileSync, readFileSync, existsSync} from 'fs'
 
-class ProductManager {
+export default class ProductManager {
 
 	constructor(path) {
 		this.products = []
@@ -20,7 +20,7 @@ class ProductManager {
 
 				productsOnFile.push({title, description, price, thumbnail, code, stock, id:this.#getLastId() + 1})
 
-				FS.writeFileSync(this.path, JSON.stringify(productsOnFile));
+				writeFileSync(this.path, JSON.stringify(productsOnFile));
 
 			}
 
@@ -29,7 +29,7 @@ class ProductManager {
 	}
 
 	getProducts() {
-		if( FS.existsSync(this.path) ) return JSON.parse(FS.readFileSync(this.path, 'utf-8'))
+		if( existsSync(this.path) ) return JSON.parse(readFileSync(this.path, 'utf-8'))
 		else return this.products
 	}
 
@@ -57,12 +57,12 @@ class ProductManager {
 			console.error(`No se encontro el producto con id ${id} a actualizar`);
 		}
 
-		FS.writeFileSync(this.path, JSON.stringify(productosOnFile));
+		writeFileSync(this.path, JSON.stringify(productosOnFile));
 	}
 
 	deleteProduct(id) {
 		const products = this.getProducts().filter(prod => prod.id !== id);
-		FS.writeFileSync(this.path, JSON.stringify(products));
+		writeFileSync(this.path, JSON.stringify(products));
 	}
 
 	#getLastId() {
@@ -71,9 +71,9 @@ class ProductManager {
 	}
 }
 
-const productos = new ProductManager('productManager.txt');
+//const productos = new ProductManager('productManager.txt');
 
-productos.addProduct({
+/* productos.addProduct({
 	title: 'Vainillin',
 	description: 'Vainillin',
 	price: 700,
@@ -107,11 +107,10 @@ productos.addProduct({
 	thumbnail: './fernet.png',
 	code: 450,
 	stock: 450
-});
+});   */
 
 //productos.updateProduct(4, {field: 'thumbnail', value: '../fernet_actualizado.png'})
 
 //productos.deleteProduct(5)
 
-console.log(productos.getProducts())
-
+//console.log(productos.getProducts())
