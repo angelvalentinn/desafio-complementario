@@ -1,0 +1,42 @@
+[
+	{
+		"title": "Azucar",
+		"description": "Azucar Ledesma",
+		"price": 1200,
+		"code": "f133",
+		"stock": 70,
+		"status": true,
+		"category": "Consumibles",
+		"id": 1
+	},
+	{
+		"title": "Leche",
+		"description": "Leche la Serenisima",
+		"price": 1600,
+		"code": "g597",
+		"stock": 30,
+		"status": true,
+		"category": "Consumibles",
+		"id": 2
+	},
+	{
+		"title": "Vitina",
+		"description": "Vitina 500g",
+		"price": 1300,
+		"code": "l910",
+		"stock": 60,
+		"status": true,
+		"category": "consumible",
+		"id": 3
+	},
+	{
+		"title": "Detergente",
+		"description": "Detergente Magistral",
+		"price": 2000,
+		"code": "z808",
+		"stock": 150,
+		"status": true,
+		"category": "Limpieza",
+		"id": 4
+	}
+]
