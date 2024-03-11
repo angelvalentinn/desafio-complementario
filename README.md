@@ -1,2 +1,2 @@
-# Pre entrega 3 - Curso de Backend Coderhouse
+# Pre entrega 1 del proyecto final - Curso de Backend Coderhouse
 ### Ángel Valentín Altieri
