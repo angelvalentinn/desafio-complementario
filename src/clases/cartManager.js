@@ -1,4 +1,5 @@
 import {writeFileSync, readFileSync, existsSync} from 'fs'
+import { isObject } from 'util';
 
 export default class CartManager {
 

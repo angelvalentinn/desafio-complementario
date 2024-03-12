@@ -9,7 +9,8 @@ carts.post('/', async (req,res) => {
 
     try {
 
-        await CART_PERSISTENT.addCart(req.body);
+        //Si no se pasa el array de productos por body devuelve {}, entonces lo convierto a array
+        await CART_PERSISTENT.addCart(Array.from(req.body));
 
         res.send({message: 'Cart creado correctamente'});
     
