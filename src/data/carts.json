@@ -38,13 +38,13 @@
 		"id": 4,
 		"products": [
 			{
-				"productId": 6,
+				"productId": 1,
+				"quantity": 4
+			},
+			{
+				"productId": 2,
 				"quantity": 1
 			}
 		]
-	},
-	{
-		"id": 5,
-		"products": []
 	}
 ]
