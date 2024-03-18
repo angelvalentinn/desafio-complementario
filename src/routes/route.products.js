@@ -3,7 +3,7 @@ import ProductManager from '../clases/productManager.js';
 
 const products = Router();
 
-const PERSISTENT_PRODUCTS = new ProductManager('src/data/products.json');
+export const PERSISTENT_PRODUCTS = new ProductManager('src/data/products.json');
 
 products.get('/', async (req,res) => {
 

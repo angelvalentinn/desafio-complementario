@@ -1,0 +1,23 @@
+<main>
+
+    <form id="form-create-product">
+        
+        <label for="#">Crear producto</label>
+        <input type="text" name="title" placeholder="Ingresar el título" id="title" required>
+        <input type="text" name="description" placeholder="Ingresar la descripción" id="description" required>
+        <input type="number" name="price" placeholder="Ingresar el precio" id="price" required>
+        <input type="text" name="code" placeholder="Ingresar el código" id="code" required>
+        <input type="text" name="stock" placeholder="Ingresar el stock" id="stock" required>
+        <input type="text" name="category" placeholder="Ingresar la categoría" id="category" required>
+
+        <input type="submit" value="Crear Producto">
+    </form>
+
+    <section class="products">
+
+    </section>
+
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

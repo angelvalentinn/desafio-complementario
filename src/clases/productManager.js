@@ -11,13 +11,13 @@ export default class ProductManager {
 
 		const productsOnFile = this.getProducts();
 
-		if (title && description && price && code && stock && status && category) {
+		if (title && description && price && code && stock && category) {
 
 			if (productsOnFile.some(product => product.code == code)) return console.error('error, código ya existente');
 	
 			else {
 
-				productsOnFile.push({title, description, price, thumbnail, code, stock, status, category , id:parseInt(this.#getLastId()) + 1})
+				productsOnFile.push({title, description, price, thumbnail, code, stock, status: true, category , id:parseInt(this.#getLastId()) + 1})
 
 				writeFileSync(this.path, JSON.stringify(productsOnFile, null, "\t"));
 
