@@ -7,7 +7,7 @@ export default function websocket (socketServer) {
 
         console.log('Nuevo cliente conectado');
 
-        await updateProducts()
+        updateProducts();
 
         deleteProduct();
 

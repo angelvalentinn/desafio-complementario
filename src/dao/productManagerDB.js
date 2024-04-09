@@ -21,7 +21,7 @@ class ProductManagerDB {
 
     async createProduct(product) {
         const {title, description, code, price, stock, category, thumbnails} = product;
-
+        
         if (!title || !description || !code || !price || !stock || !category) {
             throw new Error('Error al crear el producto');
         }

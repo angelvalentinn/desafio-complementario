@@ -33,13 +33,13 @@ function loadingProducts(products) {
             <p><span>Price:</span> ${product.price}</p>
             <p><span>Code:</span> ${product.code}</p>
             <p><span>Category:</span >${product.category}</p>
-            <p><span>Id:</span> ${product.id}</p>
+            <p><span>Id:</span> ${product._id}</p>
         `;
 
         const btnDelete = document.createElement('button');
         btnDelete.textContent = 'Eliminar producto';
         btnDelete.classList.add('delete-product');
-        btnDelete.id = product.id;
+        btnDelete.id = product._id;
 
         btnDelete.addEventListener('click', (e) => deleteProduct(e.currentTarget.id))
 
