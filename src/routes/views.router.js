@@ -1,7 +1,9 @@
 import { Router } from "express";
-import { PERSISTENT_PRODUCTS } from '../routes/route.products.js';
+import { ProductManagerDB } from '../dao/productManagerDB.js';
 
 const router = Router();
+
+const PERSISTENT_PRODUCTS = new ProductManagerDB("src/data/products.json");
 
 router.get("/", async (req, res) => {
 

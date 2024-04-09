@@ -20,23 +20,14 @@
 		"id": 2
 	},
 	{
-		"title": "Vitina",
-		"description": "Vitina 500g",
-		"price": 1300,
-		"code": "l910",
-		"stock": 60,
+		"id": 3,
+		"title": "fdasfds",
+		"description": "fafdas",
+		"code": "fgfsf",
+		"price": "324",
 		"status": true,
-		"category": "consumible",
-		"id": 3
-	},
-	{
-		"title": "producto4",
-		"description": "Producto 4",
-		"price": 1600,
-		"code": "l912",
-		"stock": 60,
-		"status": true,
-		"category": "consumible",
-		"id": 4
+		"stock": "45",
+		"category": "fgsdfg",
+		"thumbnails": []
 	}
 ]

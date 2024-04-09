@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import CartManager from '../clases/cartManager.js';
+import { CartManagerFS} from '../dao/cartManagerFS.js';
 
 const carts = Router();
 
-const CART_PERSISTENT = new CartManager('src/data/carts.json');
+const CART_PERSISTENT = new CartManagerFS('src/data/carts.json');
 
 carts.post('/', async (req,res) => {
 

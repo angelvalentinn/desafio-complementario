@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import ProductManager from '../clases/productManager.js';
+import { ProductManagerDB } from '../dao/productManagerDB.js';
 
 const products = Router();
 
-export const PERSISTENT_PRODUCTS = new ProductManager('src/data/products.json');
+export const PERSISTENT_PRODUCTS = new ProductManagerDB();
 
 products.get('/', async (req,res) => {
 

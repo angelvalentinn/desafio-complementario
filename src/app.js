@@ -3,12 +3,17 @@ import handlebars from "express-handlebars";
 import __dirname from "./util.js";
 import viewsRouter from "./routes/views.router.js";
 import { Server } from "socket.io";
-import { PERSISTENT_PRODUCTS } from './routes/route.products.js';
+import websocket from '../websocket.js';
+import mongoose from 'mongoose';
 
 const app = express();
 
 const PORT = 8080;
 const httpServer = app.listen(PORT, () => console.log(`Servidor activo en http://localhost:${PORT}`) );
+
+//MongoDB connect
+const uri = "mongodb://localhost:27017";
+mongoose.connect(uri, {dbName: "ecommerce"});
 
 //Creamos un servidor para sockets viviendo dentro de nuestro servidor principal
 const socketServer = new Server(httpServer);
@@ -27,35 +32,6 @@ app.use(express.static(`${__dirname}/public`));
 
 app.use("/", viewsRouter);
 
-socketServer.on('connection', async (socket) => {
-
-    console.log('Nuevo cliente conectado');
-
-    await updateProducts()
-
-    deleteProduct();
-
-    createProduct();
-
-
-    function createProduct() {
-        socket.on("createProduct", async (product) => {
-            await PERSISTENT_PRODUCTS.addProduct(product)
-            updateProducts();
-        })
-    }
-    
-    function deleteProduct() {
-        socket.on("deleteProduct", async (id) => {
-            await PERSISTENT_PRODUCTS.deleteProduct(id)
-            await updateProducts();
-        })
-    }
-
-    async function updateProducts() {
-        socket.emit("products",  await PERSISTENT_PRODUCTS.getProducts());
-    }
-
-})
+websocket(socketServer);
 
 
