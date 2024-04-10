@@ -1,0 +1,39 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: #383737;
+    color: #f1f1f1;
+
+    h1 {
+        text-align: center;
+    }
+
+    input {
+        width: 300px;
+        padding: .5rem;
+        border-radius: 12px;
+        outline: none;
+        border: 1px solid #5e5d5d95;
+    }
+
+    .box {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    
+        #messagesLogs {
+            display: flex;
+            flex-direction: column;
+            gap: .2rem;
+
+            .message {
+                span:first-child {
+                    color: #1D6E9C;
+                    text-transform: capitalize;
+                }
+            }
+        }
+    }
+}

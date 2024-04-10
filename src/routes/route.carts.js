@@ -1,59 +1,56 @@
 import { Router } from 'express';
-import { CartManagerFS} from '../dao/cartManagerFS.js';
+import { CartManagerDB } from '../dao/cartManagerDB.js';
 
 const carts = Router();
 
-const CART_PERSISTENT = new CartManagerFS('src/data/carts.json');
+const PERSISTENT_CART = new CartManagerDB();
 
-carts.post('/', async (req,res) => {
+carts.post('/', async (req, res) => {
 
     try {
-
-        //Si no se pasa el array de productos por body devuelve {}, entonces lo convierto a array
-        await CART_PERSISTENT.addCart(Array.from(req.body));
-
-        res.send({message: 'Cart creado correctamente'});
-    
-    } catch(e) {
-        res.send(e);
+        const result = await PERSISTENT_CART.createCart();
+        res.send({
+            status: "success",
+            payload: result,
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            message: error.message,
+        });
     }
 })
 
-carts.get("/:cid", async (req,res) => {
+carts.get("/:cid", async (req, res) => {
 
     try {
-
-        const id = req.params.cid
-
-        const cart = await CART_PERSISTENT.getCart(id);
-
-        if(!cart) throw {status:404, message: 'Cart no encontrado'};
-
-        res.send({cart})
-
-    } catch(e) {
-        res.status(e.status).send(e)
+        const result = await PERSISTENT_CART.getCartByID(req.params.cid);
+        res.send({
+            status: "success",
+            payload: result,
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            message: error.message,
+        });
     }
-
 })
 
-carts.post("/:cid/product/:pid", async (req,res) => {
+//terminar
+carts.post("/:cid/product/:pid", async (req, res) => {
 
     try {
-
-        const { cid, pid } = req.params;
-
-        const cart = await CART_PERSISTENT.getCart(cid);
-
-        if(!cart) throw {status: 404, message: 'Cart no encontrado'}
-
-        await CART_PERSISTENT.addProductOnCart(cid, pid);
-
-        res.send({message: `producto con id ${pid} añadido correctamente al carrito con id ${cid}`})
-
-    
-    } catch(e) {
-        res.send(e);
+        const result = await PERSISTENT_CART.addProductByID(req.params.cid, req.params.pid);
+        res.send({
+            status: "success",
+            payload: result,
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            message: error.message,
+        });
     }
 })
 

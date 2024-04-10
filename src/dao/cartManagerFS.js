@@ -102,4 +102,4 @@ class CartManagerFS {
     }
 }
 
-export { cartManagerFS };
+export { CartManagerFS };

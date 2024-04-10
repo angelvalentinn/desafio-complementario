@@ -2,8 +2,8 @@ import { ProductManagerDB } from './src/dao/productManagerDB.js';
 
 const PERSISTENT_PRODUCTS = new ProductManagerDB();
 
-export default function websocket (socketServer) {
-    socketServer.on('connection', async (socket) => {
+export default function websocket (io) {
+    io.on('connection', async (socket) => {
 
         console.log('Nuevo cliente conectado');
 
