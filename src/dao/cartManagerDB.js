@@ -32,7 +32,7 @@ class CartManagerDB {
             throw new Error("Error al crear carrito");
         }
     }
-    //implementar
+    
     async addProductByID(cid, pid) {
         try {
             const cart = await cartModel.findById(cid);
@@ -44,10 +44,10 @@ class CartManagerDB {
             const product = await productModel.findOne({ _id: pid });
 
             if (product) {
-                const existingProduct = cart.products.find((cartProduct) => cartProduct.product === pid);
+                const existingProduct = cart.products.find((cartProduct) => cartProduct.productId == pid);
 
                 if (existingProduct) {
-                    existingProduct.quantity++;
+                    existingProduct.quantity = existingProduct.quantity + 1;
                 } else {
                     cart.products.push({ productId: pid, quantity: 1 });
                 }

@@ -15,7 +15,7 @@ export default function websocket (io) {
 
         function createProduct() {
             socket.on("createProduct", async (product) => {
-                await PERSISTENT_PRODUCTS.addProduct(product)
+                await PERSISTENT_PRODUCTS.createProduct(product)
                 updateProducts();
             })
         }

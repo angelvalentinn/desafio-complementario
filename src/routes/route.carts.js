@@ -37,7 +37,7 @@ carts.get("/:cid", async (req, res) => {
     }
 })
 
-//terminar
+
 carts.post("/:cid/product/:pid", async (req, res) => {
 
     try {

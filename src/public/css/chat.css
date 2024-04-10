@@ -2,6 +2,7 @@ body {
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
+    
     gap: 2rem;
     background-color: #383737;
     color: #f1f1f1;
@@ -22,7 +23,7 @@ body {
         display: flex;
         flex-direction: column;
         gap: 2rem;
-    
+        padding: 0 2rem;
         #messagesLogs {
             display: flex;
             flex-direction: column;

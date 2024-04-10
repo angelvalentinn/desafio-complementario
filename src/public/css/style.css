@@ -51,11 +51,16 @@ body {
     
         .product {
             border-radius: 6px;
-            max-width: 200px;
+            max-width: 250px;
             background-color: #ddd7d7;
             padding: 1rem;
-    
+            p {
+                min-height: 30px;
+                color: #1c1c1c;
+            }
             p span {
+                color: #1D6E9C;
+                
                 font-weight: bold;
             }
 
