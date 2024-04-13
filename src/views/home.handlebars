@@ -1,12 +1,33 @@
 <section class="products">
-    {{#each products}}
-    <div class="product">
-        <p><span>Title:</span> {{this.title}}</p>
-        <p><span>Description:</span> {{description}}</p>
-        <p><span>Price:</span> ${{this.price}}</p>
-        <p><span>Code:</span> {{this.code}}</p>
-        <p><span>Category:</span> {{this.category}}</p>
-        <p><span>Id:</span> {{this._id}}</p>
+    {{#if result.isValid}}
+
+        {{#each result.docs}}
+            <div class="product">
+                <p><span>Title:</span> {{this.title}}</p>
+                <p><span>Description:</span> {{description}}</p>
+                <p><span>Price:</span> ${{this.price}}</p>
+                <p><span>Code:</span> {{this.code}}</p>
+                <p><span>Category:</span> {{this.category}}</p>
+                <p><span>Id:</span> {{this._id}}</p>
+            </div>
+        {{/each}}
+
+        {{else}}
+
+        <h2>No hay estudiantes para mostrar</h2>
+
+    {{/if}}
+</section>
+
+<section class="arrows">
+    <div>
+        {{#if result.hasPrevPage}}
+        <a href="{{result.prevLink}}" class="ant">Anterior</a>
+        {{/if}}
     </div>
-    {{/each}}
+    <div>
+        {{#if result.hasNextPage}}
+        <a href="{{result.nextLink}}" class="sig">Siguiente</a>
+        {{/if}}
+    </div>
 </section>

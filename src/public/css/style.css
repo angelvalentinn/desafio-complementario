@@ -1,9 +1,13 @@
 body {
     padding: 2rem 0 ;
-    display: grid;
-    place-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
     font-family: sans-serif;
     background-color: #1c1c1c;
+    color: #ddd7d7;
 
     form {
         border-radius: 6px;
@@ -77,6 +81,23 @@ body {
                 &:hover {
                     background-color: #a10f0f;
                 }
+            }
+        }
+    }
+
+}
+
+.arrows {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+
+    div {
+        a {
+            color: #ddd7d7;
+            text-decoration: none;
+            &:hover {
+                text-decoration: underline;
             }
         }
     }
