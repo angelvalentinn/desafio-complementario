@@ -10,23 +10,44 @@ const messages = new MessageManagerDB();
 
 router.get("/", async (req, res) => {
     
-    const { limit, page } = req.query;
-    
-    const result = await productModel.paginate({}, {page: page ?? 1, limit: limit ?? 2 , lean: true});
+    try {
+        const { limit, page, query, sort } = req.query;
+        
+        const sortOrder = (sort == "desc" || sort == -1) ? -1 : (sort == "asc" || sort == 1) ? 1 : 1;
 
-    const baseURL = "http://localhost:8080";
-    result.prevLink = result.hasPrevPage ? `${baseURL}?page=${result.prevPage}` : "";
-    result.nextLink = result.hasNextPage ? `${baseURL}?page=${result.nextPage}` : "";
-    result.isValid = !(page <= 0 || page > result.totalPages);
-    console.log(result)
-
-    res.render(
-        "home",
-        {
-            style: 'style.css',
-            result: result
+        const options = {
+            sort: {price: sortOrder},
+            page: page ?? 1, 
+            limit: limit ?? 10,
+            lean: true
         }
-    )
+
+        //Hacer el filtrado por query!!!!!!
+        const result = await productModel.paginate({}, options);
+
+        const baseURL = "http://localhost:8080";
+        result.prevLink = result.hasPrevPage ? `${baseURL}?page=${result.prevPage}` : "";
+        result.nextLink = result.hasNextPage ? `${baseURL}?page=${result.nextPage}` : "";
+        result.isValid = !(page <= 0 || page > result.totalPages);
+        result.status = 'success';
+        result.payload = result.docs;
+
+        console.log(result);
+
+        res.render(
+            "home",
+            {
+                style: 'style.css',
+                result: result
+            }
+        )
+    }
+    catch(e) {
+        res.status(500).send({
+            status: 'error',
+            message: e.message
+        })
+    }
 
 });
 
