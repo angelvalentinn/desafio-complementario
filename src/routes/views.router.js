@@ -24,8 +24,20 @@ router.get("/", async (req, res) => {
             lean: true
         }
 
-        //Hacer el filtrado por query!!!!!!
-        const result = await productModel.paginate({}, options);
+        let q = {};
+        if(query) {
+            if(query != 'false' && query != 'true') {
+                q = {category: query}
+            } else {
+                if(query == 'true') {
+                    q = {status: true}
+                } else if(query == 'false') {
+                    q = {status: false}
+                }
+            }
+        }
+
+        const result = await productModel.paginate(q, options);
 
         const baseURL = "http://localhost:8080";
         result.prevLink = result.hasPrevPage ? `${baseURL}?${sortOrder ? `sort=${sortOrder}&` : ''}page=${result.prevPage}&limit=${limit}` : "";
