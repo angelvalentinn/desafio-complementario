@@ -15,10 +15,10 @@ router.get("/", async (req, res) => {
     try {
         const { limit, page, query, sort } = req.query;
         
-        const sortOrder = (sort == "desc" || sort == -1) ? -1 : (sort == "asc" || sort == 1) ? 1 : 1;
+        const sortOrder = (sort == "desc" || sort == -1) ? -1 : (sort == "asc" || sort == 1) ? 1 : null;
 
         const options = {
-            sort: {price: sortOrder},
+            sort: sortOrder ? {price: sortOrder} : {},
             page: page ? parseInt(page) : 1, 
             limit: limit ? parseInt(limit) : 10,
             lean: true
@@ -28,8 +28,8 @@ router.get("/", async (req, res) => {
         const result = await productModel.paginate({}, options);
 
         const baseURL = "http://localhost:8080";
-        result.prevLink = result.hasPrevPage ? `${baseURL}?page=${result.prevPage}&limit=${limit}` : "";
-        result.nextLink = result.hasNextPage ? `${baseURL}?page=${result.nextPage}&limit=${limit}` : "";
+        result.prevLink = result.hasPrevPage ? `${baseURL}?${sortOrder ? `sort=${sortOrder}&` : ''}page=${result.prevPage}&limit=${limit}` : "";
+        result.nextLink = result.hasNextPage ? `${baseURL}?${sortOrder ? `sort=${sortOrder}&` : ''}page=${result.nextPage}&limit=${limit}` : "";
         result.isValid = !(page <= 0 || page > result.totalPages);
         result.status = 'success';
         result.payload = result.docs;

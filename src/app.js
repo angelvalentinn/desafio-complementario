@@ -15,7 +15,8 @@ const PORT = 8080;
 const httpServer = app.listen(PORT, () => console.log(`Servidor activo en http://localhost:${PORT}`) );
 
 //MongoDB connect
-const uri = "mongodb://localhost:27017";
+const local = "mongodb://localhost:27017"
+const uri = "mongodb+srv://altieriangel:45873351angel@cluster0.3vzafbj.mongodb.net/";
 mongoose.connect(uri, {dbName: "ecommerce"});
 
 //Creamos un servidor para sockets viviendo dentro de nuestro servidor principal
