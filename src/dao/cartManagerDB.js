@@ -5,7 +5,8 @@ class CartManagerDB {
 
     async getCarts() {
         try {
-            return await cartModel.find();
+            const result =  await cartModel.find().populate('products.productId');
+            return result;
         } catch (error) {
             console.error(error.message);
             throw new Error("Error al obtener los carritos");
@@ -14,7 +15,7 @@ class CartManagerDB {
 
     async getCartByID(cid) {
         try {
-            const cart = await cartModel.findOne({ _id: cid });
+            const cart = await cartModel.findOne({ _id: cid }).populate('products.productId');
             if (!cart) throw new Error(`Carrito con ID ${cid} no encontrado :(`);
             return cart;
         } catch (error) {

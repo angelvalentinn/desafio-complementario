@@ -2,19 +2,16 @@
     {{#if result.isValid}}
 
         {{#each result.docs}}
-            <div class="product">
+            <a class="product" href="http://localhost:8080/products/{{this._id}}">
                 <p><span>Title:</span> {{this.title}}</p>
-                <p><span>Description:</span> {{description}}</p>
                 <p><span>Price:</span> ${{this.price}}</p>
-                <p><span>Code:</span> {{this.code}}</p>
                 <p><span>Category:</span> {{this.category}}</p>
-                <p><span>Id:</span> {{this._id}}</p>
-            </div>
+            </a>
         {{/each}}
 
         {{else}}
 
-        <h2>No hay estudiantes para mostrar</h2>
+        <h2>No hay productos para mostrar</h2>
 
     {{/if}}
 </section>

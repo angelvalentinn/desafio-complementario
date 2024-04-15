@@ -58,7 +58,6 @@ class ProductManagerDB {
             throw new Error(`Error al eliminar el producto ${pid}`);
         }
     }
-    
 }
 
 export { ProductManagerDB };

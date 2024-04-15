@@ -25,15 +25,18 @@ carts.get("/:cid", async (req, res) => {
 
     try {
         const result = await PERSISTENT_CART.getCartByID(req.params.cid);
+
         res.send({
-            status: "success",
-            payload: result,
-        });
+            status: 'success',
+            payload: result
+        })
+        
     } catch (error) {
         res.status(400).send({
             status: "error",
             message: error.message,
         });
+
     }
 })
 

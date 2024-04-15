@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ProductManagerDB } from '../dao/productManagerDB.js';
+import productModel from '../dao/models/productModel.js';
 
 const products = Router();
 
@@ -9,9 +10,37 @@ products.get('/', async (req, res) => {
 
     const result = await PERSISTENT_PRODUCTS.getProducts();
 
+    const { limit, page, query, sort } = req.query;
+        
+    const sortOrder = (sort == "desc" || sort == -1) ? -1 : (sort == "asc" || sort == 1) ? 1 : 1;
+
+    const options = {
+        sort: {price: sortOrder},
+        page: page ? parseInt(page) : 1, 
+        limit: limit ? parseInt(limit) : 10,
+        lean: true
+    }
+
+    const resultPaginate = await productModel.paginate({}, options);
+
+    const baseURL = "http://localhost:8080";
+    resultPaginate.prevLink = resultPaginate.hasPrevPage ? `${baseURL}?page=${resultPaginate.prevPage}&limit=${limit}` : "";
+    resultPaginate.nextLink = resultPaginate.hasNextPage ? `${baseURL}?page=${resultPaginate.nextPage}&limit=${limit}` : "";
+    resultPaginate.isValid = !(page <= 0 || page > resultPaginate.totalPages);
+    resultPaginate.status = 'success';
+    resultPaginate.payload = resultPaginate.docs;
+
     res.send({
         status: "success",
         payload: result,
+        totalPages: resultPaginate.totalPages,
+        prevPage: resultPaginate.prevPage,
+        nextPage: resultPaginate.nextPage,
+        page: resultPaginate.page,
+        hasPrevPage: resultPaginate.hasPrevPage,
+        hasNextPage: resultPaginate.hasNextPage,
+        prevLink: resultPaginate.prevLink ? resultPaginate.prevLink : null,
+        nextLink: resultPaginate.nextLink ? resultPaginate.nextLink : null
     });
 
 })
@@ -20,10 +49,11 @@ products.get('/:pid', async (req, res) => {
 
     try {
         const result = await PERSISTENT_PRODUCTS.getProductByID(req.params.pid);
+
         res.send({
-            status: "success",
-            payload: result,
-        });
+            status: 'success',
+            payload: result
+        })
 
     } catch (error) {
         res.status(400).send({
@@ -31,6 +61,8 @@ products.get('/:pid', async (req, res) => {
             message: error.message,
         });
     }
+
+
 
 })
 
