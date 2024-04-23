@@ -8,6 +8,9 @@ import { Server } from "socket.io";
 import websocket from '../websocket.js';
 import mongoose from 'mongoose';
 import { MessageManagerDB } from "./dao/messageManagerDB.js";
+import usersRouter from './routes/usersRouter.js';
+import session from 'express-session';
+import mongoStore from 'connect-mongo';
 
 const app = express();
 
@@ -28,15 +31,31 @@ app.set("views",`${__dirname}/views`); //Establecemos la ruta de vistas
 app.set("view engine", "handlebars"); //Establecemos el motor de renderizado
 
 // Middlewares
-app.use(express.json());
+app.use(express.json()); //Nos permite hacer uso de lo que se trae por req.body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.static(`${__dirname}/public`)); //Establecemos el servidor estático de archivos, nos permite tener archivos css y js en plantillas
+
+//Session Middleware
+app.use(session(
+    {
+        store: mongoStore.create(
+            {
+                mongoUrl: uri,
+                ttl: 50000
+            }
+        ),
+        secret: 'secretPhrase',
+        resave: true,
+        saveUninitialized: true
+    }
+));
 
 //Routes
 app.use("/", viewsRouter);
 app.use("/api/products", productRouter);
 app.use('/api/carts', cartRouter);
+app.use('/api/sessions', usersRouter);
 
 const PERSISTENT_MESSAGES = new MessageManagerDB();
 

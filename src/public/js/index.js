@@ -2,7 +2,7 @@ const socket = io();
 
 const productsContainer = document.querySelector('.products');
 const form = document.querySelector('#form-create-product');
-
+const btnLogout = document.querySelector('.btn-logout');
 const title = document.querySelector('#title');
 const description = document.querySelector('#description');
 const price = document.querySelector('#price');
@@ -67,3 +67,7 @@ function createProduct()  {
 function deleteProduct(id) { 
     socket.emit("deleteProduct", id) 
 }
+
+btnLogout.addEventListener('click', () => {
+    alert("delsogt")
+})

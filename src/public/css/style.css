@@ -1,13 +1,36 @@
 body {
-    padding: 2rem 0 ;
+    padding: 0rem 0 ;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
+    gap: 0.5rem;
     font-family: sans-serif;
     background-color: #1c1c1c;
     color: #ddd7d7;
+
+    .bienvenida {
+        .btn-logout {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            text-decoration: none;
+            background-color: #a10f0f;
+            border: none;
+            color: #fff;
+            padding: .5rem 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+    }
+
+    .box {
+        span {
+            a {
+                color: #fff;
+            }
+        }
+    }
 
     form {
         border-radius: 6px;
@@ -43,6 +66,15 @@ body {
                 outline: 2px solid #1c1c1c82;
             }
 
+        }
+
+        button {
+            padding: .5rem 1rem;
+            background-color: #1c1c1c;
+            color: #f1f1f1;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
         }
     }
 

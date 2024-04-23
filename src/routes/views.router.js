@@ -3,6 +3,7 @@ import { ProductManagerDB } from '../dao/productManagerDB.js';
 import { CartManagerDB } from "../dao/cartManagerDB.js";
 import { MessageManagerDB } from '../dao/messageManagerDB.js'
 import productModel from "../dao/models/productModel.js";
+import  { auth } from '../middlewars/auth.js';
 
 const router = Router();
 
@@ -10,55 +11,75 @@ const PERSISTENT_PRODUCTS = new ProductManagerDB();
 const PERSISTENT_CART = new CartManagerDB()
 const messages = new MessageManagerDB();
 
-router.get("/", async (req, res) => {
-    
+router.get("/products", async (req, res) => {
+
     try {
-        const { limit, page, query, sort } = req.query;
-        
-        const sortOrder = (sort == "desc" || sort == -1) ? -1 : (sort == "asc" || sort == 1) ? 1 : null;
+
+
+        const { limit = '10', page = '1', query, sort } = req.query;
+
+        const sortOrder = (sort === "desc" || sort === "-1") ? -1 : 1;
 
         const options = {
-            sort: sortOrder ? {price: sortOrder} : {},
-            page: page ? parseInt(page) : 1, 
-            limit: limit ? parseInt(limit) : 10,
+
+            sort: { price: sortOrder },
+
+            page: parseInt(page),
+
+            limit: parseInt(limit),
+
             lean: true
-        }
+
+        };
 
         let q = {};
-        if(query) {
-            if(query != 'false' && query != 'true') {
-                q = {category: query}
-            } else {
-                if(query == 'true') {
-                    q = {status: true}
-                } else if(query == 'false') {
-                    q = {status: false}
-                }
-            }
+
+        if (query) {
+
+            q = query === 'true' ? { status: true } :
+
+            query === 'false' ? { status: false } :
+
+            { category: query };
+
         }
 
         const result = await productModel.paginate(q, options);
 
-        const baseURL = "http://localhost:8080";
-        result.prevLink = result.hasPrevPage ? `${baseURL}?${sortOrder ? `sort=${sortOrder}&` : ''}page=${result.prevPage}&limit=${limit}` : "";
-        result.nextLink = result.hasNextPage ? `${baseURL}?${sortOrder ? `sort=${sortOrder}&` : ''}page=${result.nextPage}&limit=${limit}` : "";
-        result.isValid = !(page <= 0 || page > result.totalPages);
+        const baseURL = "http://localhost:8080/products";
+
+        result.prevLink = result.hasPrevPage ? `${baseURL}?page=${result.prevPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}` : "";
+
+        result.nextLink = result.hasNextPage ? `${baseURL}?page=${result.nextPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}` : "";
+
+        result.isValid = page > 0 && page <= result.totalPages;
+
         result.status = 'success';
+
         result.payload = result.docs;
 
-        res.render(
-            "home",
-            {
-                style: 'style.css',
-                result: result
-            }
-        )
-    }
-    catch(e) {
-        res.status(500).send({
-            status: 'error',
-            message: e.message
+        
+        res.render("home", {
+
+            style: 'style.css',
+            result: result,
+            user: req.session.user,
+            rol: req.session.user?.admin ? 'Admin' : 'User'
+
         })
+
+    }
+
+    catch (e) {
+
+        res.status(500).send({
+
+            status: 'error',
+
+            message: e.message
+
+        })
+
     }
 
 });
@@ -79,7 +100,7 @@ router.get("/carts/:cid", async (req, res) => {
 
         let products = [];
 
-        for(let product of result.products) {
+        for (let product of result.products) {
             products.push({
                 title: product.productId.title,
                 description: product.productId.description,
@@ -90,7 +111,7 @@ router.get("/carts/:cid", async (req, res) => {
             })
         }
 
-        res.render( 
+        res.render(
             "detailCart",
             {
                 style: 'style.css',
@@ -110,7 +131,7 @@ router.get('/products/:pid', async (req, res) => {
 
     try {
         const result = await PERSISTENT_PRODUCTS.getProductByID(req.params.pid);
-        
+
         const product = {
             title: result.title,
             description: result.description,
@@ -124,7 +145,7 @@ router.get('/products/:pid', async (req, res) => {
             {
                 style: 'style.css',
                 product
-                
+
             }
         )
 
@@ -150,5 +171,27 @@ router.get("/realtimeproducts", async (req, res) => {
     )
 
 })
+
+router.get("/login", (req, res) => {
+    res.render(
+        'login',
+        {
+            title: 'Login',
+            style: 'style.css',
+            failLogin: req.session.failLogin ?? false
+        }
+    )
+});
+
+router.get("/register", (req, res) => {
+    res.render(
+        'register',
+        {
+            title: 'Register',
+            style: 'style.css',
+            failRegister: req.session.failRegister ?? false
+        }
+    )
+});
 
 export default router;
