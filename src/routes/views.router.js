@@ -58,6 +58,7 @@ router.get("/products", async (req, res) => {
 
         result.payload = result.docs;
 
+        console.log(req.session.user);
         
         res.render("home", {
 

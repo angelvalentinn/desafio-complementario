@@ -1,41 +1,36 @@
 import {Router} from 'express';
 
 import userModel from '../dao/models/userModel.js';
+import passport from 'passport';
+import { isValidPassword } from '../utils/functionsUtil.js';
 
 const router = Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", passport.authenticate('register', {failureRedirect:'/api/sessions/failregister'}) ,async (req, res) => {
     try {
         req.session.failRegister = false;
 
-        if(req.body.email.trim() == 'adminCoder@coder.com' && req.body.password.trim() == 'adminCod3r123') req.body.admin = true;
-        else req.body.admin = false;
+//        if(req.body.email.trim() == 'adminCoder@coder.com' && req.body.password.trim() == 'adminCod3r123') req.body.admin = true;
+        //else req.body.admin = false;
 
-        await userModel.create(req.body);
         res.redirect("/login");
     } catch (e) {
-        console.log(e.message);
         req.session.failRegister = true;
         res.redirect("/register");
     }
 });
 
-router.post("/login", async (req, res) => {
+router.get('/failRegister', async(req, res) => {
+    console.log('Error de Estrategia');
+    res.status(401).send({error:"Error de Estrategia"});
+})
+
+router.post("/login", passport.authenticate("login", { failureRedirect: "/api/sessions/failLogin" }) ,async (req, res) => {
     try {
         req.session.failLogin = false;
+        
         const result = await userModel.findOne({email: req.body.email});
-        if (!result) {
-            req.session.failLogin = true;
-            return res.redirect("/login");
-        }
-
-        if (req.body.password !== result.password) {
-            req.session.failLogin = true;
-            return res.redirect("/login");
-        }
-
-        delete result.password;
-        req.session.user = result;
+        req.session.user = result; 
 
         return res.redirect("/products");
     } catch (e) {
@@ -53,5 +48,12 @@ router.get("/logout", (req, res) => {
         });
     })
 });
+
+router.get('/failLogin', (req, res) => {
+    res.status(400).send({
+        status:'error',
+        message:'Failed Login'
+    })
+})
 
 export default router;

@@ -11,6 +11,8 @@ import { MessageManagerDB } from "./dao/messageManagerDB.js";
 import usersRouter from './routes/usersRouter.js';
 import session from 'express-session';
 import mongoStore from 'connect-mongo';
+import passport from "passport";
+import initializatePassport from "./config/passportConfig.js";
 
 const app = express();
 
@@ -50,6 +52,9 @@ app.use(session(
         saveUninitialized: true
     }
 ));
+initializatePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Routes
 app.use("/", viewsRouter);
