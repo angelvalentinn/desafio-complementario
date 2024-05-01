@@ -10,6 +10,12 @@ body {
     color: #ddd7d7;
 
     .bienvenida {
+
+        img {
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+        }
         .btn-logout {
             position: absolute;
             top: 20px;

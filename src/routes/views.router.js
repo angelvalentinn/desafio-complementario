@@ -62,8 +62,8 @@ router.get("/products", async (req, res) => {
             style: 'style.css',
             result: result,
             user: {
-                name: req.session.user.first_name || req.session.user.name,
-
+                name: req.session.user.name,
+                avatar: req.session.user.avatar
             },
             rol: req.session.user?.admin ? 'Admin' : 'User'
 

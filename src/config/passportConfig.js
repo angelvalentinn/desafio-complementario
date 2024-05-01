@@ -23,14 +23,16 @@ const initializatePassport = () => {
     },
     async (accessToken, refreshToken, profile, done) => {
         try {
-            
+
             let user = await userModel.findOne({username: profile._json.login})
             if(!user) {
                 let newUser = {
                     username: profile._json.login,
                     name: profile._json.name,
-                    password: ''
+                    password: '',
+                    avatar: profile._json.avatar_url
                 }
+
                 let result = await userModel.create(newUser);
                 done(null, result);
             } else {
@@ -47,8 +49,8 @@ const initializatePassport = () => {
             usernameField: 'email'
         },
         async (req, username, password, done) => {
-            const { first_name, last_name, email, age} = req.body;
-
+            const { name, last_name, email, age} = req.body;
+            console.log(req.body);
             try {
                 let user = await userModel.findOne({ email: username});
                 if (user) {
@@ -56,7 +58,7 @@ const initializatePassport = () => {
                     return done(null, false);
                 }
 
-                const newUser = { first_name, last_name, email, age, password: createHash(password)}
+                const newUser = { name, last_name, email, age, password: createHash(password)}
                 const result = await userModel.create(newUser);
                 
                 return done(null, result); //Si todo sale bien 
