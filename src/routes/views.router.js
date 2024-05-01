@@ -15,7 +15,6 @@ router.get("/products", async (req, res) => {
 
     try {
 
-
         const { limit = '10', page = '1', query, sort } = req.query;
 
         const sortOrder = (sort === "desc" || sort === "-1") ? -1 : 1;
@@ -57,14 +56,15 @@ router.get("/products", async (req, res) => {
         result.status = 'success';
 
         result.payload = result.docs;
-
-        console.log(req.session.user);
         
         res.render("home", {
 
             style: 'style.css',
             result: result,
-            user: req.session.user,
+            user: {
+                name: req.session.user.first_name || req.session.user.name,
+
+            },
             rol: req.session.user?.admin ? 'Admin' : 'User'
 
         })

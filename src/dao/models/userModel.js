@@ -8,6 +8,12 @@ const userSchema = mongoose.Schema({
         minLength: 3,
         require: true
     },
+    username: {
+        type: String,
+    },
+    name: {
+        type: String,
+    },
     last_name: {
         type: String,
         minLength: 3,
@@ -26,7 +32,6 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        minLength: 5,
         require: true
     },
     admin: {

@@ -1,11 +1,46 @@
 import passport from "passport";
 import local from "passport-local";
-
+import GitHubStrategy from 'passport-github2';
 import userModel from "../dao/models/userModel.js";
 import { createHash, isValidPassword } from "../utils/functionsUtil.js";
 
+/*
+App ID: 889464
+Client ID: 
+Client Secret: 
+*/
+
 const localStratergy = local.Strategy;
+
 const initializatePassport = () => {
+
+    passport.use(
+        'github',
+        new GitHubStrategy({
+            clientID: 'Iv1.3a911b2da9af524a',
+            clientSecret: '59feb048b8361c945511f2000478ecead0377c75',
+            callbackURL: 'http://localhost:8080/api/sessions/githubcallback'
+    },
+    async (accessToken, refreshToken, profile, done) => {
+        try {
+            
+            let user = await userModel.findOne({username: profile._json.login})
+            if(!user) {
+                let newUser = {
+                    username: profile._json.login,
+                    name: profile._json.name,
+                    password: ''
+                }
+                let result = await userModel.create(newUser);
+                done(null, result);
+            } else {
+                done(null, user);
+            }
+        } catch(error) {
+            return done(error);
+        }
+    }));
+
     passport.use('register', new localStratergy(
         {
             passReqToCallback: true, //Permite que se pueda acceder al objeto req como cualquier otro middlewar
