@@ -1,17 +1,19 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import __dirname from "./util.js";
+import { Server } from "socket.io";
+import mongoose from 'mongoose';
+import passport from "passport";
+import mongoStore from 'connect-mongo';
+import session from 'express-session';
+import cookieParser from "cookie-parser";
+
 import viewsRouter from "./routes/views.router.js";
+import __dirname from "./util.js";
 import productRouter from './routes/route.products.js';
 import cartRouter from './routes/route.carts.js';
-import { Server } from "socket.io";
 import websocket from '../websocket.js';
-import mongoose from 'mongoose';
 import { MessageManagerDB } from "./dao/messageManagerDB.js";
-import usersRouter from './routes/usersRouter.js';
-import session from 'express-session';
-import mongoStore from 'connect-mongo';
-import passport from "passport";
+import sessionRouter from './routes/sessionRouter.js';
 import initializatePassport from "./config/passportConfig.js";
 
 const app = express();
@@ -37,6 +39,7 @@ app.use(express.json()); //Nos permite hacer uso de lo que se trae por req.body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.static(`${__dirname}/public`)); //Establecemos el servidor estático de archivos, nos permite tener archivos css y js en plantillas
+app.use(cookieParser());
 
 //Session Middleware
 app.use(session(
@@ -60,10 +63,11 @@ app.use(passport.session());
 app.use("/", viewsRouter);
 app.use("/api/products", productRouter);
 app.use('/api/carts', cartRouter);
-app.use('/api/sessions', usersRouter);
+app.use('/api/sessions', sessionRouter);
 
 const PERSISTENT_MESSAGES = new MessageManagerDB();
 
+//Chat con socket
 io.on("connection", async (socket) => {
 
     updateMessages();

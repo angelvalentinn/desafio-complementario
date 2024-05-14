@@ -1,17 +1,13 @@
 import mongoose from "mongoose";
+import { createHash } from '../../utils/functionsUtil.js'
 
 const userCollection = "users";
 
 const userSchema = mongoose.Schema({
 
-    username: {
+    first_name: {
         type: String,
-    },
-    name: {
-        type: String,
-    },
-    avatar: {
-        type: String
+        require: true
     },
     last_name: {
         type: String,
@@ -26,18 +22,34 @@ const userSchema = mongoose.Schema({
     },
     age: {
         type: Number,
-        min: 18,
         require: true
     },
     password: {
         type: String,
+        hash: true,
+        minLength: 6,
         require: true
     },
-    admin: {
-        type: Boolean,
+    cartId: {
+        type: [
+            {
+                cart: {
+                    type: mongoose.Schema.ObjectId,
+                    ref: "carts"
+                }
+            }
+        ],
+        default: []
+    },
+    role: {
+        type: String,
         require: true,
-        default: false
+        default: 'user'
     }
+});
+
+userSchema.pre("save", function() {
+    this.password = createHash(this.password);
 });
 
 const userModel = mongoose.model(userCollection, userSchema);
