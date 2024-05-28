@@ -1,6 +1,6 @@
 import productModel from '../models/productModel.js';
 
-class ProductManagerDB {
+class ProductDao {
 
     async getProducts() {
         try {
@@ -60,4 +60,4 @@ class ProductManagerDB {
     }
 }
 
-export { ProductManagerDB };
+export default ProductDao;

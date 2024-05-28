@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { ProductManagerDB } from '../dao/productDao.js';
+import ProductDao from "../dao/productDao.js";
 import { CartManagerDB } from "../dao/cartManagerDB.js";
 import { MessageManagerDB } from '../dao/messageManagerDB.js'
 import productModel from "../models/productModel.js";
 
 const router = Router();
 
-const PERSISTENT_PRODUCTS = new ProductManagerDB();
+const PERSISTENT_PRODUCTS = new ProductDao();
 const PERSISTENT_CART = new CartManagerDB()
 const messages = new MessageManagerDB();
 
@@ -19,35 +19,23 @@ router.get("/products", async (req, res) => {
         const sortOrder = (sort === "desc" || sort === "-1") ? -1 : 1;
 
         const options = {
-
             sort: { price: sortOrder },
-
             page: parseInt(page),
-
             limit: parseInt(limit),
-
             lean: true
-
         };
 
         let q = {};
 
         if (query) {
-
             q = query === 'true' ? { status: true } :
-
             query === 'false' ? { status: false } :
-
             { category: query };
-
         }
 
         const result = await productModel.paginate(q, options);
-
         const baseURL = "http://localhost:8080/products";
-
         result.prevLink = result.hasPrevPage ? `${baseURL}?page=${result.prevPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}` : "";
-
         result.nextLink = result.hasNextPage ? `${baseURL}?page=${result.nextPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}` : "";
 
         result.isValid = page > 0 && page <= result.totalPages;
@@ -73,11 +61,8 @@ router.get("/products", async (req, res) => {
     catch (e) {
 
         res.status(500).send({
-
             status: 'error',
-
             message: e.message
-
         })
 
     }

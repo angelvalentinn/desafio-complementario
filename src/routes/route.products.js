@@ -1,12 +1,17 @@
 import { Router } from 'express';
-import { ProductManagerDB } from '../dao/productDao.js';
-import productModel from '../models/productModel.js';
+import ProductController from '../controllers/productController.js';
 
 const products = Router();
 
-const PERSISTENT_PRODUCTS = new ProductManagerDB();
+const PERSISTENT_PRODUCTS = new ProductController();
 
-products.get('/', async (req, res) => {
+products.get('/', PERSISTENT_PRODUCTS.getProducts);
+products.get('/:pid', PERSISTENT_PRODUCTS.getProductById);
+products.post("/", PERSISTENT_PRODUCTS.addProducts);
+products.put("/:pid",PERSISTENT_PRODUCTS.updateProduct);
+products.delete("/:pid", PERSISTENT_PRODUCTS.deleteProduct);
+
+/* products.get('/', async (req, res) => {
 
     const result = await PERSISTENT_PRODUCTS.getProducts();
 
@@ -118,5 +123,5 @@ products.delete("/:pid", async (req, res) => {
     }
 
 })
-
+ */
 export default products;
