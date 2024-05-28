@@ -6,14 +6,16 @@ import passport from "passport";
 import mongoStore from 'connect-mongo';
 import session from 'express-session';
 import cookieParser from "cookie-parser";
+import dotenv from 'dotenv';
 
 import viewsRouter from "./routes/views.router.js";
 import __dirname from "./util.js";
-import productRouter from './routes/route.products.js';
-import cartRouter from './routes/route.carts.js';
-import { MessageManagerDB } from "./dao/messageManagerDB.js";
+import productRouter from './routes/productsRouter.js';
+import cartRouter from './routes/cartsRouter.js';
 import sessionRouter from './routes/sessionRouter.js';
 import initializatePassport from "./config/passportConfig.js";
+
+dotenv.config();
 
 const app = express();
 
@@ -22,7 +24,7 @@ const httpServer = app.listen(PORT, () => console.log(`Servidor activo en http:/
 
 //MongoDB connect
 const local = "mongodb://localhost:27017"
-const uri = "mongodb+srv://altieriangel:45873351angel@cluster0.3vzafbj.mongodb.net/";
+const uri = process.env.MONGO_ATLAS; //mongodb+srv://altieriangel:45873351angel@cluster0.3vzafbj.mongodb.net/
 mongoose.connect(uri, {dbName: "ecommerce"});
 
 //Creamos un servidor para sockets viviendo dentro de nuestro servidor principal
@@ -64,7 +66,6 @@ app.use("/api/products", productRouter);
 app.use('/api/carts', cartRouter);
 app.use('/api/sessions', sessionRouter);
 
-const PERSISTENT_MESSAGES = new MessageManagerDB();
 
 
 

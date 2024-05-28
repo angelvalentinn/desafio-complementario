@@ -63,7 +63,7 @@ router.post('/login', async (req, res) => {
     } catch (error) {
         res.status(400).send({
             status: 'error',
-            message: error.message
+            message: 'Error al loguear usuario: ' + error.message
         });
     }
 });

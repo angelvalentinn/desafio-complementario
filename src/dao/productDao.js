@@ -48,6 +48,7 @@ class ProductDao {
 
     async deleteProduct(pid) {
         try {
+            
             const result = await productModel.deleteOne({_id: pid});
 
             if (result.deletedCount === 0) throw new Error(`El producto ${pid} no existe!`);

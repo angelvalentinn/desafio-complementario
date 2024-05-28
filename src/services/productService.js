@@ -24,7 +24,7 @@ class ProductService {
 
     async addProducts(product) {
         try {
-            return await this.productDao.addProducts(product);
+            return await this.productDao.createProduct(product);
         } catch (error) {
             throw new Error("Error al agregar el producto");
         }

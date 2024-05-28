@@ -65,7 +65,7 @@ class ProductController {
                 return;
             }
         
-            await myProducts.deleteProduct(pid);
+            await productsService.deleteProduct(pid);
             res.status(200).send({ message: "Producto eliminado correctamente" });
         } catch (error) {
             res.status(500).send('No se pudo borrar el producto');
