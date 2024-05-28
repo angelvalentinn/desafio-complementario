@@ -1,13 +1,13 @@
 import { Router } from "express";
 import ProductDao from "../dao/productDao.js";
-import { CartManagerDB } from "../dao/cartManagerDB.js";
+import CartDao from "../dao/cartDao.js";
 import { MessageManagerDB } from '../dao/messageManagerDB.js'
 import productModel from "../models/productModel.js";
 
 const router = Router();
 
 const PERSISTENT_PRODUCTS = new ProductDao();
-const PERSISTENT_CART = new CartManagerDB()
+const PERSISTENT_CART = new CartDao()
 const messages = new MessageManagerDB();
 
 router.get("/products", async (req, res) => {

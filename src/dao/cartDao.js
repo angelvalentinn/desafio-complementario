@@ -1,7 +1,7 @@
 import cartModel from '../models/cartModel.js'
 import productModel from '../models/productModel.js';
 
-class CartManagerDB {
+class CartDao {
 
     async getCarts() {
         try {
@@ -15,7 +15,9 @@ class CartManagerDB {
 
     async getCartByID(cid) {
         try {
+            
             const cart = await cartModel.findOne({ _id: cid }).populate('products.productId');
+        
             if (!cart) throw new Error(`Carrito con ID ${cid} no encontrado :(`);
             return cart;
         } catch (error) {
@@ -24,7 +26,7 @@ class CartManagerDB {
         }
     }
 
-    async createCart() {
+    async addCart() {
         try {
             const newCart = await cartModel.create({ products: [] });
             return newCart;
@@ -68,23 +70,18 @@ class CartManagerDB {
     async deleteProductOnCart(cid, pid) {
 
         try {
-        
             const cart = await this.getCartByID(cid);
-
             const product = await productModel.findOne({ _id: pid });
-
-            if(product) {
-                
-                const i = cart.products.findIndex(cartProduct => cartProduct.productId == pid);
+            
+            if(product) {    
+                const i = cart.products.findIndex(cartProduct => cartProduct.productId._id == pid );
                 
                 if (i !== -1) {
-
+                    
                     cart.products.splice(i, 1);
-                    
                     await cart.save();
-                    
-                    return "Producto eliminado correctamente del carrito";
-                
+
+                    return "Producto eliminado correctamente del carrito"; 
                 } else {
                     throw new Error(`Producto con ID ${pid} no encontrado en el carrito`);
                 }
@@ -99,7 +96,7 @@ class CartManagerDB {
         }
     }
 
-    async updateCart(cid, productsUpdate) {
+    async updateProduct(cid, productsUpdate) {
 
         try {
             const cart = await this.getCartByID(cid);
@@ -132,7 +129,7 @@ class CartManagerDB {
             const product = await productModel.findOne({ _id: pid });
             if(product) {
 
-                const p = cart.products.find(cartProduct => cartProduct.productId == pid);
+                const p = cart.products.find(cartProduct => cartProduct.productId._id == pid);
                 
                 if(p) {
                     p.quantity = quantityUpdate;
@@ -172,4 +169,4 @@ class CartManagerDB {
 
 }
 
-export { CartManagerDB };
+export default CartDao;
