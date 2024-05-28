@@ -3,7 +3,7 @@ import local from "passport-local";
 import GitHubStrategy from 'passport-github2';
 import jwt, { ExtractJwt } from 'passport-jwt';
 
-import userModel from "../dao/models/userModel.js";
+import userModel from "../models/userModel.js";
 import { createHash, isValidPassword } from "../utils/functionsUtil.js";
 
 const localStratergy = local.Strategy;

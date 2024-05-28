@@ -1,9 +1,9 @@
 import {Router} from 'express';
-import UserManager from '../dao/userManagerDB.js';
+import UserController from '../controllers/userController.js';
 import passport from 'passport';
 
 const router = Router();
-const SessionService = new UserManager();
+const userController = new UserController();
 
 const isAdmin = (req, res, next) => {
 
@@ -13,6 +13,7 @@ const isAdmin = (req, res, next) => {
         status: 'error',
         message: 'no autorizado'
     });
+    
 }
 
 router.get("/github", passport.authenticate('github', {scope: ['user:email']}), (req, res) => {
@@ -29,7 +30,7 @@ router.get("/githubcallback", passport.authenticate('github', {failureRedirect: 
 
 router.post('/register', async (req, res) => {
     try {
-        const result = await SessionService.register(req.body);
+        const result = await userController.createUser(req.body);
         res.send({
             status: 'success',
             payload: result
@@ -50,12 +51,14 @@ router.get('/failRegister', async(req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const token = await SessionService.login(email, password);
 
+        const token = await userController.loginUser({email, password});
+        
         res.cookie('auth', token, { maxAge: 60*60*1000 }).send({
             status: 'success',
             token
         });
+
 
     } catch (error) {
         res.status(400).send({
@@ -73,7 +76,7 @@ router.get('/current', passport.authenticate('jwt', {session: false}), async (re
 
 router.get('/:uid', passport.authenticate('jwt', {session: false}), isAdmin ,async (req, res) => {
     try {
-        const result = await SessionService.getUser(req.params.uid);
+        const result = await userController.getUserByID(req.params.uid);
         res.send({
             status: 'success',
             payload: result

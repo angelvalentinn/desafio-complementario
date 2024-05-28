@@ -1,8 +1,8 @@
-import userModel from "./models/userModel.js";
+import userModel from "../models/userModel.js";
 import { isValidPassword } from "../utils/functionsUtil.js";
 import jwt from "jsonwebtoken";
 
-class UserManager {
+class UserDao {
 
     async getUsers() {
         try {
@@ -22,26 +22,23 @@ class UserManager {
         }
     }
 
-    async register(user) {
-        const { first_name, last_name, email, age, password } = user;
-
-        if (!first_name || !last_name || !email || !age || !password) {
-            throw new Error('Error al registrar usuario!');
-        }
-
-        const emailExists = await userModel.findOne({ email }).lean();
-
-        if (emailExists) {
-            new Error("Usuario ya existente!");
-        }
-
+    async register(username, email, password) {
         try {
-            await userModel.create({ first_name, last_name, email, age, password });
-
-            return "Usuario creado correctamente!";
+            const existeUser = await userModel.findOne({ email });
+    
+            if (existeUser) {
+                throw new Error(`Usuario con ${email} ya existe!`);
+            } else {
+                const newUser = {
+                    username,
+                    email,
+                    password: password
+                };
+                await userModel.create(newUser);
+                return newUser;
+            }
         } catch (error) {
-            console.error(error.message);
-            throw new Error('No se pudo registrar al usuario!');
+            throw new Error(error.message);
         }
     }
 
@@ -70,4 +67,4 @@ class UserManager {
 
 }
 
-export default UserManager; 
+export default UserDao; 

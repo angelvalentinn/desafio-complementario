@@ -1,17 +1,12 @@
 import mongoose from "mongoose";
-import { createHash } from '../../utils/functionsUtil.js'
+import { createHash } from '../utils/functionsUtil.js'
 
 const userCollection = "users";
 
 const userSchema = mongoose.Schema({
 
-    first_name: {
+    username: {
         type: String,
-        require: true
-    },
-    last_name: {
-        type: String,
-        minLength: 3,
         require: true
     },
     email: {
@@ -19,10 +14,6 @@ const userSchema = mongoose.Schema({
         minLength: 5,
         require: true,
         unique: true
-    },
-    age: {
-        type: Number,
-        require: true
     },
     password: {
         type: String,
@@ -46,6 +37,7 @@ const userSchema = mongoose.Schema({
         require: true,
         default: 'user'
     }
+    
 });
 
 userSchema.pre("save", function() {

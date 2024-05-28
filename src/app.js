@@ -11,7 +11,6 @@ import viewsRouter from "./routes/views.router.js";
 import __dirname from "./util.js";
 import productRouter from './routes/route.products.js';
 import cartRouter from './routes/route.carts.js';
-import websocket from '../websocket.js';
 import { MessageManagerDB } from "./dao/messageManagerDB.js";
 import sessionRouter from './routes/sessionRouter.js';
 import initializatePassport from "./config/passportConfig.js";
@@ -67,32 +66,5 @@ app.use('/api/sessions', sessionRouter);
 
 const PERSISTENT_MESSAGES = new MessageManagerDB();
 
-//Chat con socket
-io.on("connection", async (socket) => {
-
-    updateMessages();
-
-    socket.on("message", async data => {
-
-        try {
-            await PERSISTENT_MESSAGES.addMessage(data.user, data.message);
-            updateMessages();
-        } catch(e) {
-            console.error("Error al enviar este mensaje", error.message);
-        }
-    });
-
-    socket.on("usserConnect", async (data) => {
-        socket.emit("messagesLogs", await PERSISTENT_MESSAGES.getMessages());
-        
-        socket.broadcast.emit("newUser", data);
-    })
-
-    async function updateMessages() {
-        io.emit("messagesLogs", await PERSISTENT_MESSAGES.getMessages());
-    }
-})
-
-websocket(io);
 
 

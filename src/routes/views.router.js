@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { ProductManagerDB } from '../dao/productManagerDB.js';
+import { ProductManagerDB } from '../dao/productDao.js';
 import { CartManagerDB } from "../dao/cartManagerDB.js";
 import { MessageManagerDB } from '../dao/messageManagerDB.js'
-import productModel from "../dao/models/productModel.js";
-import  { auth } from '../middlewars/auth.js';
+import productModel from "../models/productModel.js";
 
 const router = Router();
 
